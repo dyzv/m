@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>dyysko v01</title>
 
-<meta http-equiv="refresh" content="10">
+<head><meta http-equiv="refresh" content="10">
+<script>
+let n = localStorage.getItem("refreshCount") || 0;
+n++;
+localStorage.setItem("refreshCount", n);
+document.title = "dyysko v01 [" + n + "]";
+</script>
+</head>
+    
 
+    
 <style>
 body{
     font-family: Arial, sans-serif;
