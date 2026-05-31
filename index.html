@@ -1,12 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <body bgcolor=red>
-<title>dyysko</title>
+<meta charset="UTF-8">
+<title>GitHub Pages Test Dashboard</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:20px;
+}
+
+.box{
+    border:1px solid #ccc;
+    padding:10px;
+    margin:10px 0;
+}
+
+h1{
+    margin-bottom:20px;
+}
+</style>
+
 </head>
 <body>
 
-<h1>Hello World</h1>
+<h1>GitHub Pages Test Dashboard</h1>
+
+<div class="box">
+    <b>Current Time:</b>
+    <div id="clock"></div>
+</div>
+
+<div class="box">
+    <b>Page Last Modified:</b>
+    <div id="modified"></div>
+</div>
+
+<div class="box">
+    <b>Screen Resolution:</b>
+    <div id="screen"></div>
+</div>
+
+<div class="box">
+    <b>Browser:</b>
+    <div id="browser"></div>
+</div>
+
+<div class="box">
+    <b>Operating System:</b>
+    <div id="os"></div>
+</div>
+
+<div class="box">
+    <b>Language:</b>
+    <div id="lang"></div>
+</div>
+
+<div class="box">
+    <b>Online Status:</b>
+    <div id="online"></div>
+</div>
+
+<div class="box">
+    <b>Current URL:</b>
+    <div id="url"></div>
+</div>
+
+<div class="box">
+    <b>GitHub Repository:</b>
+    <div id="repo">dyzv / m</div>
+</div>
+
+<div class="box">
+    <b>Public IP Address:</b>
+    <div id="ip">Loading...</div>
+</div>
+
+<script>
+
+// Live Clock
+function updateClock(){
+    document.getElementById("clock").innerHTML =
+        new Date().toString();
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// Page Modified
+document.getElementById("modified").innerHTML =
+    document.lastModified;
+
+// Screen
+document.getElementById("screen").innerHTML =
+    screen.width + " x " + screen.height;
+
+// Browser
+document.getElementById("browser").innerHTML =
+    navigator.userAgent;
+
+// OS
+document.getElementById("os").innerHTML =
+    navigator.platform;
+
+// Language
+document.getElementById("lang").innerHTML =
+    navigator.language;
+
+// Online Status
+document.getElementById("online").innerHTML =
+    navigator.onLine ? "Online" : "Offline";
+
+// URL
+document.getElementById("url").innerHTML =
+    location.href;
+
+// Public IP
+fetch("https://api.ipify.org?format=json")
+.then(r => r.json())
+.then(data => {
+    document.getElementById("ip").innerHTML = data.ip;
+})
+.catch(() => {
+    document.getElementById("ip").innerHTML =
+        "Unable to fetch";
+});
+
+</script>
 
 </body>
 </html>
