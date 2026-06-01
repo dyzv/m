@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html>
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<head><meta http-equiv="refresh" content="10">
-<script>
-let n = localStorage.getItem("refreshCount") || 0;
-n++;
-localStorage.setItem("refreshCount", n);
-document.title = "dyysko v01 [" + n + "]";
-</script>
+    <meta http-equiv="refresh" content="10">
+
+    <script>
+    let n = localStorage.getItem("refreshCount") || 0;
+    n++;
+    localStorage.setItem("refreshCount", n);
+    document.title = "dyysko v01 [" + n + "]";
+    </script>
 </head>
     
 
     
 <style>
-body{
-    font-family: Arial, sans-serif;
-    margin:20px;
+    
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .box{
