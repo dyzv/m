@@ -1,146 +1,105 @@
 <!DOCTYPE html>
 <html>
-    
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dyysko</title>
 
-    <meta http-equiv="refresh" content="10">
-
-    <script>
-    let n = localStorage.getItem("refreshCount") || 0;
-    n++;
-    localStorage.setItem("refreshCount", n);
-    document.title = "dyysko v01 [" + n + "]";
-    </script>
-</head>
-    
-
-    
 <style>
-    
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-.box{
-    border:1px solid #ccc;
-    padding:10px;
-    margin:10px 0;
-}
-
-h1{
-    margin-bottom:20px;
-}
+html,body{margin:0;padding:10px;font-family:Arial}
+.box{border:1px solid #ccc;padding:10px;margin:10px 0}
+#v{width:100%;height:120px;background:#000}
+audio{width:100%}
 </style>
-
 </head>
+
 <body>
 
 <h1>GitHub Pages Test Dashboard</h1>
 
-<div class="box">
-    <b>Current Time:</b>
-    <div id="clock"></div>
-</div>
+<div class="box"><b>Current Time:</b><div id="clock"></div></div>
+<div class="box"><b>Page Last Modified:</b><div id="modified"></div></div>
+<div class="box"><b>Screen Resolution:</b><div id="screen"></div></div>
+<div class="box"><b>Browser:</b><div id="browser"></div></div>
+<div class="box"><b>Operating System:</b><div id="os"></div></div>
+<div class="box"><b>Language:</b><div id="lang"></div></div>
+<div class="box"><b>Online Status:</b><div id="online"></div></div>
+<div class="box"><b>Current URL:</b><div id="url"></div></div>
+<div class="box"><b>GitHub Repository:</b><div>dyzv / m</div></div>
+<div class="box"><b>Public IP Address:</b><div id="ip">Loading...</div></div>
 
 <div class="box">
-    <b>Page Last Modified:</b>
-    <div id="modified"></div>
-</div>
-
-<div class="box">
-    <b>Screen Resolution:</b>
-    <div id="screen"></div>
-</div>
-
-<div class="box">
-    <b>Browser:</b>
-    <div id="browser"></div>
-</div>
-
-<div class="box">
-    <b>Operating System:</b>
-    <div id="os"></div>
-</div>
-
-<div class="box">
-    <b>Language:</b>
-    <div id="lang"></div>
-</div>
-
-<div class="box">
-    <b>Online Status:</b>
-    <div id="online"></div>
-</div>
-
-<div class="box">
-    <b>Current URL:</b>
-    <div id="url"></div>
-</div>
-
-<div class="box">
-    <b>GitHub Repository:</b>
-    <div id="repo">dyzv / m</div>
-</div>
-
-<div class="box">
-    <b>Public IP Address:</b>
-    <div id="ip">Loading...</div>
+<b>Audio:</b><br><br>
+<audio id="a" controls crossorigin="anonymous"
+src="https://raw.githubusercontent.com/dyzv/m/refs/heads/main/m.mp3"></audio>
+<br><br>
+<canvas id="v"></canvas>
 </div>
 
 <script>
 
-// Live Clock
-function updateClock(){
-    document.getElementById("clock").innerHTML =
-        new Date().toString();
-}
-setInterval(updateClock,1000);
-updateClock();
+/* dashboard */
 
-// Page Modified
-document.getElementById("modified").innerHTML =
-    document.lastModified;
+clock.innerHTML=new Date();
+setInterval(()=>clock.innerHTML=new Date(),1000);
 
-// Screen
-document.getElementById("screen").innerHTML =
-    screen.width + " x " + screen.height;
+modified.innerHTML=document.lastModified;
+screen.innerHTML=screen.width+" x "+screen.height;
+browser.innerHTML=navigator.userAgent;
+os.innerHTML=navigator.platform;
+lang.innerHTML=navigator.language;
+online.innerHTML=navigator.onLine?"Online":"Offline";
+url.innerHTML=location.href;
 
-// Browser
-document.getElementById("browser").innerHTML =
-    navigator.userAgent;
-
-// OS
-document.getElementById("os").innerHTML =
-    navigator.platform;
-
-// Language
-document.getElementById("lang").innerHTML =
-    navigator.language;
-
-// Online Status
-document.getElementById("online").innerHTML =
-    navigator.onLine ? "Online" : "Offline";
-
-// URL
-document.getElementById("url").innerHTML =
-    location.href;
-
-// Public IP
 fetch("https://api.ipify.org?format=json")
-.then(r => r.json())
-.then(data => {
-    document.getElementById("ip").innerHTML = data.ip;
-})
-.catch(() => {
-    document.getElementById("ip").innerHTML =
-        "Unable to fetch";
-});
+.then(x=>x.json())
+.then(x=>ip.innerHTML=x.ip)
+.catch(()=>ip.innerHTML="Unable to fetch");
+
+
+/* audio visualizer */
+
+let c=v,x=c.getContext("2d"),A;
+
+a.onplay=()=>{
+
+ if(A)return;
+
+ let C=new AudioContext(),
+     N=C.createAnalyser(),
+     S=C.createMediaElementSource(a);
+
+ N.fftSize=128;
+ S.connect(N);
+ N.connect(C.destination);
+ A=new Uint8Array(N.frequencyBinCount);
+
+ function draw(){
+
+  requestAnimationFrame(draw);
+  N.getByteFrequencyData(A);
+
+  c.width=c.clientWidth;
+  c.height=c.clientHeight;
+
+  x.clearRect(0,0,c.width,c.height);
+
+  A.forEach((n,i)=>{
+   let h=n/255*c.height;
+   x.fillStyle="#fff";
+   x.fillRect(
+    i*c.width/A.length,
+    c.height-h,
+    c.width/A.length-1,
+    h
+   );
+  });
+
+ }
+
+ draw();
+
+};
 
 </script>
 
